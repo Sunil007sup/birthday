@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Birthday Surprise 🎉</title>
+  <style>
+    /* Basic body styling with background gradient and flexbox centering */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    /* Curtain base style */
+    .curtain {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: radial-gradient(circle at center, #c2185b 0%, #880e4f 100%);
+      z-index: 2;
+      transition: transform 2.5s ease-in-out;
+      border-top-left-radius: 60% 10%;
+      border-bottom-left-radius: 60% 10%;
+      box-shadow: inset -5px 0px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Right curtain override */
+    .right-curtain {
+      right: 0;
+      transform-origin: right;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 60% 10%;
+      border-bottom-right-radius: 60% 10%;
+      box-shadow: inset 5px 0px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Left curtain override */
+    .left-curtain {
+      left: 0;
+      transform-origin: left;
+    }
+
+    /* Curtain open animations */
+    .open-left {
+      transform: translateX(-100%);
+    }
+    .open-right {
+      transform: translateX(100%);
+    }
+
+    /* Start button style */
+    .start-btn {
+      z-index: 3;
+      padding: 16px 40px;
+      font-size: 1.3rem;
+      border: none;
+      border-radius: 50px;
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease-in-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Button hover effect */
+    .start-btn:hover {
+      background: #e6004c;
+      transform: scale(1.05);
+    }
+
+    /* Hidden birthday wish container */
+    .wish {
+      display: none;
+      text-align: center;
+      color: #fff;
+      z-index: 1;
+      animation: fadeIn 2s ease forwards;
+      margin-top: 40px;
+    }
+
+    /* Main birthday wish headline */
+    .wish h1 {
+      font-size: 3rem;
+      text-shadow: 1px 1px 3px #ff4081;
+    }
+
+    /* Personal message style */
+    .message {
+      font-size: 1.6rem;
+      margin-top: 20px;
+    }
+
+    /* Quote styling */
+    .quote {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin-top: 20px;
+      color: #fffbe0;
+    }
+
+    /* Placeholder for cake image */
+    .cake {
+      width: 150px;
+      margin-top: 20px;
+      animation: popIn 1s ease-out;
+    }
+
+    /* Fade in animation for wish */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Confetti fall animation */
+    @keyframes fall {
+      from { transform: translateY(-100px) rotate(0deg); }
+      to { transform: translateY(100vh) rotate(360deg); }
+    }
+
+    /* Confetti style */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      animation: fall 4s linear infinite;
+      border-radius: 50%;
+    }
+
+    /* Pop animation for cake or future items */
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    /* ...existing code... */
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .wish h1 {
+    font-size: 2.2rem;
+  }
+  .message {
+    font-size: 1.2rem;
+  }
+  .quote {
+    font-size: 1rem;
+  }
+  .cake {
+    width: 100px;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+    font-size: 1rem;
+  }
+  .curtain {
+    width: 60%;
+    border-radius: 40% 10%;
+  }
+  .right-curtain {
+    width: 60%;
+  }
+  .wish h1 {
+    font-size: 1.3rem;
+  }
+  .message {
+    font-size: 1rem;
+  }
+  .quote {
+    font-size: 0.9rem;
+  }
+  .start-btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .wish h1 {
+    font-size: 1rem;
+  }
+  .message, .quote {
+    font-size: 0.8rem;
+  }
+  .cake {
+    width: 70px;
+  }
+}
+
+/* ...existing code... */
+  </style>
+</head>
+<body>
+
+  <!-- Curtain panels -->
+  <div class="curtain left-curtain" id="leftCurtain"></div>
+  <div class="curtain right-curtain" id="rightCurtain"></div>
+
+  <!-- Surprise button -->
+  <button class="start-btn" onclick="startShow()">Click for a Surprise</button>
+
+  <!-- Birthday message hidden by default -->
+  <div class="wish" id="wish">
+    <h1>🎉 Happy Birthday, Lali! 🎂</h1>
+    <div class="message">
+      💖 Wishing you joy, love, and laughter on your special day. You’re one in a million!
+    </div>
+    <div class="quote">
+      "The more you praise and celebrate your life, the more there is in life to celebrate." – Oprah Winfrey
+    </div>
+  </div>
+
+  <script>
+    // Function to trigger the birthday animation sequence
+    function startShow() {
+      // Open both curtains
+      document.getElementById('leftCurtain').classList.add('open-left');
+      document.getElementById('rightCurtain').classList.add('open-right');
+
+      // Hide the button
+      document.querySelector('.start-btn').style.display = 'none';
+
+      // Delay showing the message until curtains are fully open
+      setTimeout(() => {
+        document.getElementById('wish').style.display = 'block';
+
+        // Create confetti particles
+        for (let i = 0; i < 100; i++) {
+          const confetti = document.createElement('div');
+          confetti.classList.add('confetti');
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.top = Math.random() * -20 + 'vh';
+          confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
+          confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+          document.body.appendChild(confetti);
+
+          // Remove confetti after 5 seconds
+          setTimeout(() => confetti.remove(), 5000);
+        }
+
+        // Launch some fireworks after wish
+        startFireworksBurst();
+
+      }, 2500);
+    }
+
+    // Launch firework burst randomly
+    function startFireworksBurst() {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          const x = window.innerWidth * (0.2 + 0.6 * Math.random());
+          const y = window.innerHeight * (0.2 + 0.5 * Math.random());
+          launchFirework(x, y);
+        }, i * 500);
+      }
+    }
+
+    // Firework animation particles
+    function launchFirework(x, y) {
+      const colors = ['#ff4d6d', '#ffd700', '#00e1ff', '#aaff00', '#ff00c8', '#fff'];
+      const particles = 30;
+
+      for (let i = 0; i < particles; i++) {
+        const firework = document.createElement('div');
+        firework.style.position = 'absolute';
+        firework.style.left = x + 'px';
+        firework.style.top = y + 'px';
+        firework.style.width = '8px';
+        firework.style.height = '8px';
+        firework.style.borderRadius = '50%';
+        firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+        firework.style.pointerEvents = 'none';
+        firework.style.zIndex = 10;
+
+        const angle = (2 * Math.PI * i) / particles;
+        const distance = 80 + Math.random() * 40;
+
+        // Animate the firework explosion outward
+        firework.animate([
+          { transform: `translate(0,0) scale(1)`, opacity: 1 },
+          { transform: `translate(${Math.cos(angle)*distance}px,${Math.sin(angle)*distance}px) scale(0.5)`, opacity: 0 }
+        ], {
+          duration: 1200 + Math.random()*400,
+          easing: 'ease-out'
+        });
+
+        document.body.appendChild(firework);
+
+        // Remove the firework dot after animation
+        setTimeout(() => firework.remove(), 1300);
+      }
+    }
+  </script>
+</body>
+</html>
